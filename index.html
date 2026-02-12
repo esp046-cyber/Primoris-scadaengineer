@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beginner's Guide to SCADA Engineering at Primoris</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1e5799 0%, #2d8f4d 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+        
+        .content {
+            padding: 40px 30px;
+        }
+        
+        h2 {
+            color: #1e5799;
+            border-left: 4px solid #2d8f4d;
+            padding-left: 15px;
+            margin: 30px 0 15px 0;
+            font-size: 1.5em;
+        }
+        
+        h3 {
+            color: #2d8f4d;
+            margin: 20px 0 10px 0;
+            font-size: 1.2em;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        
+        ul {
+            margin: 15px 0 15px 30px;
+        }
+        
+        li {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        
+        .info-box {
+            background: #e8f4f8;
+            border-left: 4px solid #1e5799;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .highlight {
+            background: #f0f8f0;
+            border-left: 4px solid #2d8f4d;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        th {
+            background: #1e5799;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9em;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        @media print {
+            body {
+                background: white;
+            }
+            .container {
+                box-shadow: none;
+            }
+            header {
+                background: #1e5799;
+            }
+        }
+        
+        .nav-menu {
+            background: #2d8f4d;
+            padding: 15px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .nav-menu button {
+            background: white;
+            color: #1e5799;
+            border: none;
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .nav-menu button:hover {
+            background: #1e5799;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .step-controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .step-controls button {
+            background: #1e5799;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+        
+        .step-controls button:hover {
+            background: #2d8f4d;
+            transform: scale(1.05);
+        }
+        
+        .step-controls button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .step-item {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+        
+        .step-item.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .step-counter {
+            background: #2d8f4d;
+            color: white;
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        .skill-step {
+            display: none;
+        }
+        
+        .skill-step.active {
+            display: list-item;
+        }
+        
+        @media print {
+            .nav-menu, .step-controls {
+                display: none;
+            }
+            .step-item, .skill-step {
+                display: block !important;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.5em;
+            }
+            .content {
+                padding: 20px 15px;
+            }
+            h2 {
+                font-size: 1.3em;
+            }
+            .nav-menu button {
+                padding: 8px 12px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Beginner's Guide to SCADA Engineering at Primoris</h1>
+            <p>Your Pathway to Infrastructure Excellence</p>
+        </header>
+        
+        <div class="nav-menu">
+            <button onclick="scrollToSection('company')">Company</button>
+            <button onclick="scrollToSection('job')">Job Title</button>
+            <button onclick="scrollToSection('responsibilities')">Responsibilities</button>
+            <button onclick="scrollToSection('education')">Education</button>
+            <button onclick="scrollToSection('skills')" style="background: #2d8f4d; color: white; font-weight: bold;">📚 Skills Tutorials</button>
+            <button onclick="scrollToSection('checklist')">✅ Checklist</button>
+            <button onclick="scrollToSection('benefits')">Benefits</button>
+        </div>
+        
+        <div class="content">
+            <div class="section" id="company">
+                <h2>Company Overview</h2>
+                <p>Primoris Services Corporation is a premier specialty contractor providing critical infrastructure services to the utility, energy, and renewables markets throughout the United States and Canada. Built on a foundation of trust, we deliver a range of engineering, construction, and maintenance services that power, connect, and enhance society. On projects spanning utility-scale solar, renewables, power delivery, communications, and transportation infrastructure, we offer unmatched value to our clients, a safe and entrepreneurial culture to our employees, and innovation and excellence to our communities.</p>
+                <p>Visit <strong>www.prim.com</strong> and follow <strong>@PrimorisServicesCorporation</strong>.</p>
+            </div>
+            
+            <div class="section" id="job">
+                <h2>Job Title & Reporting Structure</h2>
+                <div class="info-box">
+                    <table>
+                        <tr>
+                            <th>Position</th>
+                            <td>SCADA Engineer</td>
+                        </tr>
+                        <tr>
+                            <th>Reports To</th>
+                            <td>Manager, SCADA & Performance Engineering</td>
+                        </tr>
+                        <tr>
+                            <th>Support Areas</th>
+                            <td>Pre-construction and Operations</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>Role Responsibilities</h2>
+                
+                <h3>Pre-construction</h3>
+                <p>Work with Engineering, Estimating, and Procurement to review client SCADA specifications and solicit SCADA quotes.</p>
+                
+                <h3>Operations</h3>
+                <p>Review SCADA plans/drawings from vendors and EORs, support commissioning/performance needs, assist project team in managing 3rd party SCADA suppliers.</p>
+            </div>
+            
+            <div class="section" id="responsibilities">
+                <h2>Primary Job Responsibilities</h2>
+                <p><em>Navigate through each responsibility step-by-step:</em></p>
+                
+                <div class="step-counter" id="resp-counter">Step 1 of 8</div>
+                
+                <div id="resp-steps">
+                    <div class="step-item active">
+                        <h3>Step 1: Review Client SCADA Specifications</h3>
+                        <p>Review & comment on client-provided SCADA technical specifications and Scope of Work (SOW)</p>
+                    </div>
+                    <div class="step-item">
+                        <h3>Step 2: Solicit Vendor Proposals</h3>
+                        <p>Solicit proposals from SCADA suppliers/vendors/subcontractors</p>
+                    </div>
+                    <div class="step-item">
+                        <h3>Step 3: Streamline Communication</h3>
+                        <p>Work with Substation, BESS, O&M vendors to streamline communication process around SCADA requirements</p>
+                    </div>
+                    <div class="step-item">
+                        <h3>Step 4: Review Drawing Packages</h3>
+                        <p>Review & comment on SCADA drawing packages provided by 3rd party SCADA vendors and EORs</p>
+                    </div>
+                    <div class="step-item">
+                        <h3>Step 5: Support Operations Team</h3>
+                        <p>Support Operations project team in managing 3rd party SCADA providers and visit project sites as required</p>
+                    </div>
+                    <div class="step-item">
+                        <h3>Step 6: Attend Training Sessions</h3>
+                        <p>Attend trainings provided by SCADA providers and Equipment Manufacturers</p>
+                    </div>
+                    <div class="step-item">
+                        <h3>Step 7: Assist During Commissioning</h3>
+                        <p>Assist construction team during SCADA commissioning and Performance team during plant performance testing</p>
+                    </div>
+                    <div class="step-item">
+                        <h3>Step 8: Support Troubleshooting</h3>
+                        <p>Support troubleshooting efforts by Operations as well as O&M teams for active sites and those in warranty stages</p>
+                    </div>
+                </div>
+                
+                <div class="step-controls">
+                    <button id="resp-prev" onclick="changeRespStep(-1)">← Previous</button>
+                    <button id="resp-next" onclick="changeRespStep(1)">Next →</button>
+                </div>
+            </div>
+            
+            <div class="section" id="education">
+                <h2>Education & Experience Requirements</h2>
+                <div class="highlight">
+                    <ul>
+                        <li><strong>Education:</strong> Bachelor of Science/Engineering in Electronics Communications, Electrical, Mechanical, Computer Science, Data Analytics Engineering or related (ABET accredited)</li>
+                        <li><strong>Experience:</strong> 2–5 years SCADA Engineering experience, preferably in Renewable Energy</li>
+                        <li><strong>Software Proficiency:</strong> Experience with Microsoft Teams, AutoDesk Construction Cloud (ACC), AutoDesk or MS Visio for SCADA Single Line Diagrams</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="section" id="skills">
+                <h2>📚 Comprehensive Skills Tutorials</h2>
+                <p><em>Each skill below is expanded into a detailed, beginner-friendly tutorial with step-by-step guidance. Use the "Next Step / Prev Step" buttons to navigate through each tutorial at your own pace. These tutorials are designed to help you develop practical expertise in SCADA engineering.</em></p>
+                
+                <h3>Skill 1: Familiarity with common equipment manufacturers in Solar, BESS, HV industries</h3>
+                <p><strong>Comprehensive Tutorial:</strong></p>
+                <div class="step-counter" id="skill1-counter">Step 1 of 8</div>
+                <ul id="skill1-steps">
+                    <li class="skill-step active">
+                        <strong>Step 1: Identify Major Equipment Categories</strong><br>
+                        Start by understanding the three main equipment categories in renewable energy projects: Solar (inverters, trackers, panels), BESS (Battery Energy Storage Systems), and HV (High Voltage equipment like transformers and switchgear). Each category has different manufacturers and SCADA integration requirements. Create a simple spreadsheet to organize this information as you research.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 2: Research Top Solar Equipment Vendors</strong><br>
+                        Focus on inverter manufacturers first, as they're critical for SCADA integration. Key vendors include: SMA Solar (Germany), Sungrow (China), Huawei (China), SolarEdge (Israel), and Fronius (Austria). Visit their websites and download product catalogs. Look for communication protocol specifications in their datasheets.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 3: Study BESS Manufacturers</strong><br>
+                        Battery storage manufacturers include Tesla (Megapack), LG Energy Solution, BYD, Samsung SDI, and Fluence. Download their technical specifications and pay special attention to BMS (Battery Management System) communication protocols. Note which protocols each manufacturer supports (Modbus, DNP3, IEC 61850).
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 4: Learn About HV Equipment Suppliers</strong><br>
+                        High voltage equipment manufacturers include ABB, Siemens, Schneider Electric, GE Grid Solutions, and Hitachi Energy. Focus on power transformers, switchgear, and protection relays. These often use IEC 61850 for substation automation. Download their SCADA integration guides.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 5: Read Equipment Datasheets Systematically</strong><br>
+                        When reviewing datasheets, create a checklist: communication protocols supported, Ethernet ports available, data points accessible, update rates, cybersecurity features, and compatibility with common SCADA platforms. Highlight these sections in PDFs for quick reference.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 6: Note SCADA Integration Specifications</strong><br>
+                        Pay attention to: IP address configuration requirements, port numbers (e.g., Modbus TCP typically uses port 502), supported registers and data types, polling intervals, and any special configuration needed. Create a quick-reference guide for each manufacturer's integration requirements.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 7: Join Industry Forums and Webinars</strong><br>
+                        Follow manufacturers on LinkedIn, join solar/BESS industry groups, and attend free webinars. Manufacturers like SMA and Sungrow offer online training sessions. This helps you stay updated on new products and SCADA integration best practices. Bookmark useful resources.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 8: Build a Personal Reference Library</strong><br>
+                        Organize all downloaded datasheets, manuals, and integration guides in a cloud folder (OneDrive, Google Drive). Use a naming convention like "Manufacturer_ProductType_Model_Version.pdf". Create a summary Excel file listing key specs for quick comparison. Update this library regularly as you encounter new equipment on projects.
+                    </li>
+                </ul>
+                <div class="step-controls">
+                    <button onclick="changeSkillStep(1, -1)">← Prev Step</button>
+                    <button onclick="changeSkillStep(1, 1)">Next Step →</button>
+                </div>
+                
+                <h3>Skill 2: Knowledge of IEC61850 and IEEE communication/interoperability protocols</h3>
+                <p><strong>Comprehensive Tutorial:</strong></p>
+                <div class="step-counter" id="skill2-counter">Step 1 of 10</div>
+                <ul id="skill2-steps">
+                    <li class="skill-step active">
+                        <strong>Step 1: Understand What IEC 61850 Is</strong><br>
+                        IEC 61850 is an international standard for substation automation and power utility communication. It defines how devices like protection relays, RTUs, and meters communicate using standardized data models. Think of it as a common language that allows different manufacturers' equipment to talk to each other seamlessly.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 2: Learn the Three Key Services</strong><br>
+                        IEC 61850 uses three main communication services: MMS (Manufacturing Message Specification) for client-server read/write over TCP/IP, GOOSE (Generic Object Oriented Substation Event) for peer-to-peer fast messaging (milliseconds), and SV (Sampled Values) for transmitting voltage/current measurements. Start with MMS as it's most commonly used in SCADA.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 3: Study the Data Model Hierarchy</strong><br>
+                        IEC 61850 uses a hierarchical structure: Server → Logical Device → Logical Node → Data Objects → Data Attributes. For example: "SERVER1/PROT/MMXU1.TotW.mag.f" means Server1, Protection device, Measurement logical node 1, Total Watts, magnitude, float value. Practice reading these addresses.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 4: Access Free Learning Resources</strong><br>
+                        Start with the official IEC website (webstore.iec.ch) for standard overviews. Watch YouTube tutorials from channels like "Protection Relays" or "Substation Automation". Download free IEC 61850 guides from manufacturers like ABB and Siemens. The CIGRE technical brochures also provide excellent beginner-friendly explanations.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 5: Understand Client-Server Architecture</strong><br>
+                        In IEC 61850 MMS, the SCADA system acts as the client and field devices (relays, RTUs) act as servers. The client sends "read" requests to get data or "write" commands to control equipment. This happens over standard Ethernet using TCP/IP port 102. Study OSI layer concepts to understand how this works.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 6: Practice with Free Simulators</strong><br>
+                        Download free tools like IEC 61850 Device Simulator from SourceForge, or use vendor-specific simulators from SEL, ABB, or GE. These allow you to simulate IEC 61850 devices and practice reading data objects. Experiment with browsing the data model and reading/writing values.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 7: Learn About GOOSE Messaging</strong><br>
+                        GOOSE is used for fast, critical messaging between devices (e.g., trip signals). Unlike MMS, GOOSE is multicast over Ethernet Layer 2, bypassing TCP/IP for speed (2-4ms). Watch videos demonstrating GOOSE configuration in protection relays. Understand the concept of "republishing" GOOSE messages for redundancy.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 8: Study SCL Files (System Configuration Language)</strong><br>
+                        IEC 61850 uses XML-based SCL files to describe system configurations: ICD (IED Capability Description), SCD (Substation Configuration Description), and CID (Configured IED Description). Download sample SCL files and open them in free tools like IEC 61850 System Configurator. Learn to read device capabilities from these files.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 9: Explore IEEE Standards for Interoperability</strong><br>
+                        Study IEEE standards related to power systems: IEEE 1547 (interconnection), IEEE 2030.5 (smart grid communication), and IEEE C37.118 (synchrophasor). Understand how these complement IEC 61850 in modern renewable energy systems. Read application notes from manufacturers explaining these protocols.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 10: Join Professional Communities</strong><br>
+                        Join LinkedIn groups like "IEC 61850 Professionals" and "Substation Automation Specialists". Follow UCAIug (UCA International Users Group) for events and webinars. Participate in forums, ask questions, and share your learning progress. Consider obtaining UCAIug certification for IEC 61850 once you have foundational knowledge.
+                    </li>
+                </ul>
+                <div class="step-controls">
+                    <button onclick="changeSkillStep(2, -1)">← Prev Step</button>
+                    <button onclick="changeSkillStep(2, 1)">Next Step →</button>
+                </div>
+                
+                <h3>Skill 3: Understanding of NERC, FERC and utility communication requirements for compliance</h3>
+                <p><strong>Comprehensive Tutorial:</strong></p>
+                <div class="step-counter" id="skill3-counter">Step 1 of 9</div>
+                <ul id="skill3-steps">
+                    <li class="skill-step active">
+                        <strong>Step 1: Learn What NERC and FERC Are</strong><br>
+                        NERC (North American Electric Reliability Corporation) develops and enforces reliability standards for the bulk power system. FERC (Federal Energy Regulatory Commission) is the government agency that regulates interstate electricity transmission and approves NERC standards. Together, they ensure the electrical grid operates safely and reliably across North America.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 2: Understand Critical Infrastructure Protection (CIP)</strong><br>
+                        NERC CIP standards (CIP-002 through CIP-014) protect the grid from cyber and physical security threats. For SCADA engineers, focus on CIP-005 (Electronic Security Perimeters), CIP-007 (System Security Management), and CIP-010 (Configuration Change Management). These define how SCADA systems must be secured and monitored.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 3: Study Communication-Specific Standards</strong><br>
+                        NERC COM standards address reliable communications: COM-001 (telecommunications requirements), COM-002 (communication protocols during emergencies). These ensure that SCADA systems can communicate critical operational data even during grid disturbances. Review the NERC website (nerc.com) for current standard versions.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 4: Review Your Project's Interconnection Agreement</strong><br>
+                        Every renewable energy project has an interconnection agreement with the local utility. This document specifies SCADA communication requirements, data points to be transmitted, update rates, cybersecurity protocols, and communication redundancy. Request this document from your project manager and highlight all SCADA-related sections.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 5: Identify Required Reporting and Monitoring</strong><br>
+                        Utilities typically require real-time monitoring of: MW/MVAR output, voltage at point of interconnection, frequency, breaker/switch status, and availability. Some require 2-4 second update rates. Document these requirements in a compliance checklist. Check if the utility requires specific communication protocols (DNP3, IEC 61850, Modbus).
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 6: Understand Secure Communication Requirements</strong><br>
+                        Modern projects require encrypted communications between the plant SCADA and utility control centers. Learn about VPN tunnels, firewalls, and secure serial protocols. Study the concept of DMZ (Demilitarized Zone) for isolating SCADA networks. Review vendor documentation on implementing secure communications with their equipment.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 7: Access NERC's Free Educational Resources</strong><br>
+                        Visit nerc.com and navigate to "Resources & Tools" → "Reliability Standards". Download the beginner's guide to CIP standards. Watch NERC's webinar recordings on compliance topics. Sign up for their email updates to stay informed about new standards and enforcement actions (learning from others' mistakes is valuable).
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 8: Learn About Utility-Specific Requirements</strong><br>
+                        Different utilities (PG&E, Duke Energy, ERCOT, CAISO, etc.) have additional requirements beyond NERC/FERC. They may require specific communication formats, redundant communication paths, or particular SCADA platforms. Always request the utility's technical requirements document early in the project. Create a requirements matrix comparing project specs to utility requirements.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 9: Document Compliance in Your SCADA Designs</strong><br>
+                        When reviewing SCADA specifications or commissioning systems, create a compliance checklist referencing specific NERC CIP and utility requirements. Include screenshots, configuration files, and test results proving compliance. This documentation is critical during audits. Use templates that map each requirement to its implementation and verification method.
+                    </li>
+                </ul>
+                <div class="step-controls">
+                    <button onclick="changeSkillStep(3, -1)">← Prev Step</button>
+                    <button onclick="changeSkillStep(3, 1)">Next Step →</button>
+                </div>
+                
+                <h3>Skill 4: Proficiency navigating HMI's for troubleshooting/data collection</h3>
+                <p><strong>Comprehensive Tutorial:</strong></p>
+                <div class="step-counter" id="skill4-counter">Step 1 of 10</div>
+                <ul id="skill4-steps">
+                    <li class="skill-step active">
+                        <strong>Step 1: Understand What an HMI Is</strong><br>
+                        HMI (Human-Machine Interface) is the software interface that displays real-time SCADA data and allows operators to control equipment. Common HMI platforms in renewable energy include Ignition, WinCC, iFIX, and Wonderware. The HMI presents data visually through graphics, trends, and alarms, making complex systems easier to monitor and control.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 2: Log Into HMI Software Safely</strong><br>
+                        Always use your assigned credentials - never share logins. Most HMIs use role-based access (Operator, Engineer, Administrator). Understand your permission level. Before logging in, verify you're on the correct HMI server (development vs. production). Document your login time and purpose if required by project procedures.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 3: Navigate the Main Overview Screen</strong><br>
+                        The main screen typically shows a site overview with one-line diagrams, current production levels, and alarm summaries. Learn to recognize normal operating conditions: all equipment green/running, MW output matching solar irradiance, no active alarms. Click on equipment symbols to drill down into detailed screens. Bookmark frequently used screens.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 4: Check and Interpret Alarms</strong><br>
+                        Access the alarm screen (usually a dedicated button or tab). Alarms are color-coded: red (critical), yellow (warning), blue (informational). Check timestamps to see when issues started. Look for alarm "flooding" (many similar alarms), which indicates a root cause issue. Acknowledge alarms only after understanding them - never clear alarms blindly.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 5: Review Equipment Status Indicators</strong><br>
+                        Learn standard status displays: green = running, red = fault, gray = offline, yellow = warning. Check communication status indicators - if a device shows "comm loss", the SCADA can't reach it. Look for "local/remote" mode indicators - equipment in local mode won't respond to SCADA commands. Document any abnormal status with screenshots.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 6: Use Trend Screens for Diagnostics</strong><br>
+                        Open trend/history screens to view data over time (last hour, day, week). This reveals patterns: does the issue happen at specific times? Is it getting worse? Common trends to check: MW output vs. irradiance, inverter temperatures, battery SOC (State of Charge), voltage/frequency. Right-click to export trend data to Excel for detailed analysis.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 7: Review Historical Logs and Events</strong><br>
+                        Access the event log to see command history and system changes. Filter logs by time range, equipment, or event type. Look for: who made changes and when, automatic control actions, communication failures. Export logs when troubleshooting - they're essential for root cause analysis. Note any correlation between events and alarms.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 8: Verify Communication Status</strong><br>
+                        Check the SCADA communication diagnostics screen (location varies by platform). Look for: device IP addresses, last successful poll time, communication error counts, and network latency. If a device isn't communicating, verify: network cable connections, switch port lights (green = link, blinking = data), and IP address conflicts. Use ping tests from the SCADA server.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 9: Master Tag Reading and Data Quality</strong><br>
+                        Tags are data points in SCADA (e.g., "INV01_ActivePower"). Learn to identify: tag name, current value, timestamp, and quality indicator. Quality codes: Good (reliable data), Bad (communication loss or sensor failure), Uncertain (stale data). Never trust data with Bad/Uncertain quality. Follow naming conventions in your vendor's tag database documentation.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 10: Follow Vendor-Specific Navigation Guides</strong><br>
+                        Each HMI platform has unique features. Download the user manual for your specific HMI version (Ignition 8.x, WinCC 7.5, etc.). Watch vendor tutorial videos. Practice on non-critical screens first. Create personal quick-reference notes: keyboard shortcuts, screen navigation paths, and troubleshooting workflows. Update these notes as you gain experience.
+                    </li>
+                </ul>
+                <div class="step-controls">
+                    <button onclick="changeSkillStep(4, -1)">← Prev Step</button>
+                    <button onclick="changeSkillStep(4, 1)">Next Step →</button>
+                </div>
+                
+                <h3>Skill 5: Knowledge of main SCADA protocols and network topologies in utility-scale solar PV/BESS/wind</h3>
+                <p><strong>Comprehensive Tutorial:</strong></p>
+                <div class="step-counter" id="skill5-counter">Step 1 of 9</div>
+                <ul id="skill5-steps">
+                    <li class="skill-step active">
+                        <strong>Step 1: Learn the Three Most Common SCADA Protocols</strong><br>
+                        Modbus TCP/IP is the simplest - it uses standard Ethernet for request-response communication. DNP3 (Distributed Network Protocol) is more robust with built-in time-stamping and event reporting. IEC 61850 is the most advanced, designed specifically for power systems with object-oriented data models. Start by understanding Modbus TCP as it's most common in solar/BESS applications.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 2: Deep Dive into Modbus TCP/IP</strong><br>
+                        Modbus TCP uses simple request-response: the SCADA master (client) requests data from field devices (servers). Default port: 502. Key concepts: Function codes (03=read holding registers, 06=write single register), Register addresses (40001-49999 for holding registers), and data types (16-bit integers, 32-bit floats). Download a free Modbus guide from Modbus.org.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 3: Understand DNP3 Protocol</strong><br>
+                        DNP3 is widely used by utilities. It supports unsolicited event reporting (devices push data when changes occur), time-synchronization, and file transfers. DNP3 uses object variations to describe data types (Analog Input Object 30 Variation 1 = 32-bit integer). More complex than Modbus but more powerful. Review DNP3 documentation from dnp.org.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 4: Study IEC 61850 for Power Applications</strong><br>
+                        Already covered in Skill 2, but note its importance in BESS and substation integration. IEC 61850 excels at peer-to-peer communication (GOOSE) for fast protection schemes. In solar/BESS projects, it's often used for HV substation equipment while Modbus handles inverter-level communication. Understand when each protocol is appropriate.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 5: Master Star Network Topology</strong><br>
+                        Star topology is most common: a central SCADA server/switch connects to all field devices individually. Advantages: simple troubleshooting (one device failure doesn't affect others), easy to add devices. Disadvantages: switch failure takes down the whole system. Draw a diagram of your project's star network showing SCADA server, Ethernet switches, and all connected devices with IP addresses.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 6: Understand Ring Topology for Redundancy</strong><br>
+                        Ring topology connects devices in a loop with redundant paths. If one connection breaks, data flows the opposite direction. Common in critical applications using industrial Ethernet protocols like Profinet or HSR (High-availability Seamless Redundancy). Study ring topology configurations in ABB and Siemens documentation. Note that this requires managed switches with ring support.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 7: Learn Daisy-Chain Topology (RS-485 Legacy)</strong><br>
+                        Daisy-chain connects devices in series, common in older RS-485 Modbus installations. Each device must have a unique Modbus address (1-247). Requires proper termination resistors (120 ohm) at both ends. Maximum distance: 4000 feet. Modern projects use Ethernet, but you'll encounter RS-485 in legacy equipment. Understand how to troubleshoot communication failures in daisy-chains.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 8: Study Solar/BESS-Specific Network Architectures</strong><br>
+                        Typical setup: Ethernet-based with industrial switches connecting inverters, revenue meters, weather stations, and trackers to a central SCADA server. Inverters often communicate via Modbus TCP on a dedicated VLAN (Virtual LAN). BESS systems use multiple protocols: Modbus for BMS, DNP3 for utility interface. Create a network diagram showing VLANs, IP subnets (e.g., 192.168.1.x for inverters, 192.168.2.x for BESS), and protocol assignments.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 9: Practice with Network Tools and Simulators</strong><br>
+                        Download free tools: Wireshark (packet analyzer to see Modbus/DNP3 traffic), ModScan (Modbus master simulator), and DNP3 SAv6 (DNP3 analyzer). Practice capturing and analyzing protocol communications. Set up a test bench with a PLC or RTU simulator. Learn to identify communication problems from packet captures: timeouts, incorrect register addresses, malformed packets.
+                    </li>
+                </ul>
+                <div class="step-controls">
+                    <button onclick="changeSkillStep(5, -1)">← Prev Step</button>
+                    <button onclick="changeSkillStep(5, 1)">Next Step →</button>
+                </div>
+                
+                <h3>Skill 6: Expert in Microsoft Office/Excel; programming skills preferred</h3>
+                <p><strong>Comprehensive Tutorial:</strong></p>
+                <div class="step-counter" id="skill6-counter">Step 1 of 8</div>
+                <ul id="skill6-steps">
+                    <li class="skill-step active">
+                        <strong>Step 1: Master Excel Data Import and Organization</strong><br>
+                        Learn to import SCADA data exports (CSV, TXT files) using Data → Get Data. Clean data using Text to Columns, Remove Duplicates, and Find & Replace. Organize with frozen headers (View → Freeze Panes), filters (Data → Filter), and sorting. Create a template workbook with pre-formatted sheets for common SCADA data analysis tasks.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 2: Learn Essential Formulas for SCADA Analysis</strong><br>
+                        Master these formulas: VLOOKUP/XLOOKUP (match device tags to descriptions), SUMIFS/COUNTIFS (calculate totals based on conditions), IF/IFS (categorize data), TEXT (format timestamps), and AVERAGE/MAX/MIN (statistical analysis). Example: =SUMIFS(Power, Time, ">=8:00", Time, "<=17:00") calculates daytime production.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 3: Create Powerful Pivot Tables</strong><br>
+                        Pivot Tables summarize large SCADA datasets instantly. Insert → PivotTable, then drag fields to Rows (equipment), Columns (time periods), and Values (kWh totals). Practice creating daily/monthly energy summaries, alarm count reports by inverter, and availability calculations. Add slicers for interactive filtering. Save favorite pivot layouts as templates.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 4: Build Professional Charts and Dashboards</strong><br>
+                        Create charts that tell the story: Line charts (power vs. time), Column charts (daily production comparison), Scatter plots (power vs. irradiance correlation). Use dual-axis charts to overlay multiple parameters. Build a dashboard using pivot charts linked to slicers. Format professionally: clear titles, axis labels, legends, and data labels where helpful.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 5: Learn Conditional Formatting for Quick Insights</strong><br>
+                        Highlight important data automatically: Color scales (green=high production, red=low), Data Bars (visualize values in cells), Icon Sets (status indicators). Example: use conditional formatting to highlight communication timeouts (red), normal operation (green), warnings (yellow). This makes large datasets easier to scan for issues.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 6: Introduction to VBA Macros</strong><br>
+                        Start simple: Record macros (Developer tab → Record Macro) to automate repetitive tasks like formatting SCADA reports. Learn to edit recorded macros: Alt+F11 opens VBA editor. Begin with basic commands: MsgBox (display messages), Range().Value (read/write cells), For Each loops (process multiple sheets). Practice creating a "Format SCADA Report" button that applies consistent formatting.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 7: Automate SCADA Data Processing with VBA</strong><br>
+                        Build on Step 6: Create macros to import multiple CSV files, combine data from different sources, calculate performance metrics automatically, and generate standardized reports. Example VBA project: Auto-process daily SCADA exports → Calculate availability → Create summary chart → Email report. Find VBA tutorials on YouTube channel "Excel VBA Is Fun".
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 8: Organize and Share SCADA Data Professionally</strong><br>
+                        Use Excel Tables (Insert → Table) for dynamic data ranges that auto-expand. Create named ranges for important data areas. Protect sensitive sheets (Review → Protect Sheet). Use data validation for dropdown lists. Save workbooks in shared locations (SharePoint, Teams) with version control. Document your workbooks with a "README" sheet explaining data sources, calculations, and update procedures.
+                    </li>
+                </ul>
+                <div class="step-controls">
+                    <button onclick="changeSkillStep(6, -1)">← Prev Step</button>
+                    <button onclick="changeSkillStep(6, 1)">Next Step →</button>
+                </div>
+                
+                <h3>Skill 7: Knowledge/experience with TCP/IP, Modbus etc.</h3>
+                <p><strong>Comprehensive Tutorial - Modbus TCP:</strong></p>
+                <div class="step-counter" id="skill7-counter">Step 1 of 10</div>
+                <ul id="skill7-steps">
+                    <li class="skill-step active">
+                        <strong>Step 1: Understand TCP/IP Networking Basics</strong><br>
+                        TCP/IP is how devices communicate over Ethernet. Every device needs an IP address (e.g., 192.168.1.100), subnet mask (e.g., 255.255.255.0), and gateway. Learn the concept of ports - like apartment numbers for network traffic. Modbus TCP uses port 502. Download a free TCP/IP networking course from Cisco NetAcad or watch "Professor Messer" videos on YouTube.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 2: Learn IP Address Classes and Subnetting</strong><br>
+                        Class C private addresses (192.168.x.x) are most common in SCADA. Subnet mask /24 (255.255.255.0) allows 254 devices. Practice IP address planning: assign ranges logically (192.168.1.1-50 for inverters, 192.168.1.51-100 for meters). Use online subnet calculators. Understand broadcast addresses and network addresses - critical for troubleshooting.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 3: Master the Modbus TCP Protocol Structure</strong><br>
+                        Modbus TCP wraps standard Modbus in TCP/IP packets. Structure: MBAP Header (7 bytes: Transaction ID, Protocol ID, Length, Unit ID) + Modbus PDU (Function Code + Data). The SCADA client initiates all communications - devices only respond when polled. No broadcast capability. Study Modbus protocol specification from Modbus.org (free download).
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 4: Understand Modbus Register Types</strong><br>
+                        Four register types: Coils (0xxxx, read/write single bits for on/off), Discrete Inputs (1xxxx, read-only bits), Input Registers (3xxxx, read-only 16-bit values for measurements), Holding Registers (4xxxx, read/write 16-bit values for settings/measurements). Most SCADA data uses Holding Registers. Addresses are 0-based in protocol but often displayed as 1-based (40001 = address 0).
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 5: Learn Common Modbus Function Codes</strong><br>
+                        FC 01: Read Coils, FC 02: Read Discrete Inputs, FC 03: Read Holding Registers (most common), FC 04: Read Input Registers, FC 05: Write Single Coil, FC 06: Write Single Register, FC 16: Write Multiple Registers. Example: To read power output (register 40100-40101, 32-bit float), use FC 03, start address 99, quantity 2. Practice with ModScan software.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 6: Connect to Modbus Devices via IP/Port</strong><br>
+                        Use Modbus master software (ModScan, Modbus Poll, or Ignition Designer). Configure: Device IP (e.g., 192.168.1.50), Port 502, Modbus Unit/Slave ID (usually 1, or check device manual). Test connection: ping the device first (cmd → ping 192.168.1.50). If ping fails, check physical connections, IP conflicts, or firewall settings.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 7: Read and Write Modbus Registers</strong><br>
+                        To read: Specify FC 03, start register (e.g., 40001), quantity (e.g., 10 registers). Data displays in hex or decimal. To write: Use FC 06 for single register or FC 16 for multiple. Example: Setting inverter power limit (register 40200) to 1000kW - convert 1000 to appropriate format (may need scaling factor from manual), write to register 199 (40200-1).
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 8: Use ModScan and Other Testing Tools</strong><br>
+                        Download ModScan32 (free for testing). Create a Modbus TCP connection, scan registers to discover available data points. Save successful configurations. Use Wireshark to capture Modbus TCP packets - helps understand exactly what's being transmitted. Learn to identify Modbus exceptions: 01=illegal function, 02=illegal address, 03=illegal data value, 04=slave device failure.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 9: Troubleshoot Common Modbus TCP Issues</strong><br>
+                        No response: Check IP connectivity (ping), verify port 502 is open (use telnet or PortQry), confirm correct Unit ID. Timeout errors: Adjust polling rate (don't poll too fast, allow 100-500ms between requests). Wrong data: Verify register addresses in device manual, check byte order (big-endian vs little-endian), confirm data type (16-bit vs 32-bit). Document all settings for future reference.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 10: Integrate Modbus TCP into SCADA Systems</strong><br>
+                        In your SCADA platform (Ignition, WinCC, etc.), create Modbus TCP device connections using learned settings. Map register addresses to meaningful tag names (e.g., "INV01_ActivePower_kW"). Set appropriate scan rates (1-5 seconds for most values). Enable exception reporting if supported. Test thoroughly: verify data accuracy, check behavior during communication loss, document scaling factors and engineering units.
+                    </li>
+                </ul>
+                <div class="step-controls">
+                    <button onclick="changeSkillStep(7, -1)">← Prev Step</button>
+                    <button onclick="changeSkillStep(7, 1)">Next Step →</button>
+                </div>
+                
+                <h3>Skill 8: Strong written/oral communication</h3>
+                <p><strong>Comprehensive Tutorial:</strong></p>
+                <div class="step-counter" id="skill8-counter">Step 1 of 7</div>
+                <ul id="skill8-steps">
+                    <li class="skill-step active">
+                        <strong>Step 1: Structure Emails for Clarity and Action</strong><br>
+                        Start with a clear subject line: "URGENT: Site ABC SCADA Communication Down" or "Request: Inverter 15 Modbus Register Map". Begin with purpose: "I'm writing to request/report/update..." Use bullet points for multiple items. End with clear next steps: "Please confirm receipt by 3pm" or "I will follow up tomorrow." Keep paragraphs short (3-4 lines max). Proofread before sending.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 2: Write Effective Technical Reports</strong><br>
+                        Use this structure: Executive Summary (1-2 sentences of key findings), Background (what was the issue), Investigation (steps taken), Root Cause (what you found), Resolution (how it was fixed), Recommendations (prevent recurrence). Include screenshots, diagrams, and data tables. Date all reports. Example: "SCADA Troubleshooting Report - Site XYZ - 2/12/2026" saved as PDF in the project folder.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 3: Document Issues with Precision</strong><br>
+                        When reporting problems, include: Exact equipment identifier (Inverter 15, not "an inverter"), Timestamp (when issue started), Symptoms observed (alarms, HMI displays), Actions taken, Current status. Avoid vague terms like "broken" - be specific: "Communication timeout on Modbus register 40100." Attach relevant screenshots with annotations (arrows, highlights, notes).
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 4: Master Professional Phone and Meeting Communication</strong><br>
+                        Prepare before calls: Have project details, equipment IDs, and questions ready. Introduce yourself fully: "Hi, this is [Name], SCADA Engineer at Primoris working on the ABC Solar Project." Listen actively - take notes. Speak clearly and at moderate pace. If discussing technical details, offer to send written follow-up: "Let me email you a summary with the register addresses we discussed."
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 5: Adapt Communication to Your Audience</strong><br>
+                        For executives/management: High-level summary, impact on schedule/budget, recommended actions. Avoid jargon. For engineering colleagues: Technical details, protocols, register addresses, root causes. Use industry terms freely. For vendors: Specific model numbers, firmware versions, exact error messages, reference their documentation. For O&M teams: Step-by-step procedures, safety warnings, visual aids. Practice explaining technical issues simply.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 6: Use Visual Communication Tools</strong><br>
+                        Create clear diagrams using Visio or PowerPoint: Network diagrams with IP addresses, SCADA architecture schematics, troubleshooting flowcharts. Annotate screenshots with arrows, boxes, and text callouts. Use color coding consistently (red=problem, green=working, yellow=caution). Include legends. Export as PDF for sharing. Example: Create a one-page SCADA network diagram showing all devices, IPs, and communication paths.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 7: Develop Active Listening and Feedback Skills</strong><br>
+                        During meetings/calls, paraphrase to confirm understanding: "So you're saying the communication drops every hour at :15 past?" Ask clarifying questions: "Which specific inverters are affected?" Take notes and share them: "Here's my understanding of next steps - please let me know if I missed anything." When receiving instructions, repeat critical details: "Confirmed: I'll update the IP to 192.168.1.55 and test by 2pm."
+                    </li>
+                </ul>
+                <div class="step-controls">
+                    <button onclick="changeSkillStep(8, -1)">← Prev Step</button>
+                    <button onclick="changeSkillStep(8, 1)">Next Step →</button>
+                </div>
+                
+                <h3>Skill 9: Ability to prioritize, multitask, work independently</h3>
+                <p><strong>Comprehensive Tutorial:</strong></p>
+                <div class="step-counter" id="skill9-counter">Step 1 of 8</div>
+                <ul id="skill9-steps">
+                    <li class="skill-step active">
+                        <strong>Step 1: Implement a Task Management System</strong><br>
+                        Use a digital task list (Microsoft To Do, Planner, or even Excel). Create categories: Urgent & Important, Important Not Urgent, Urgent Not Important, Neither. Every morning, list your tasks and categorize them. Use the Eisenhower Matrix principle: Do Urgent & Important immediately, Schedule Important items, Delegate Urgent items if possible, Eliminate Neither items. Review and update your list throughout the day.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 2: Set Clear Priorities Based on Impact</strong><br>
+                        When multiple tasks compete, ask: Which affects site production? Which has contractual deadlines? Which blocks other team members? Which prevents safety issues? Example priority order: (1) SCADA system down (production stopped), (2) Vendor RFI due tomorrow (contractual), (3) Reviewing non-critical drawings (can wait), (4) Organizing files (lowest priority). Communicate your priorities to your manager.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 3: Break Large Projects into Manageable Steps</strong><br>
+                        Big task example: "Review complete SCADA package for 50MW solar project." Break it down: (1) Review specifications (2 hrs), (2) Check single-line diagrams (1 hr), (3) Verify communication architecture (1 hr), (4) Review points list (2 hrs), (5) Compile comments (1 hr). Schedule each subtask across multiple days. Track completion percentage. This prevents overwhelm and provides measurable progress.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 4: Master Time Blocking for Deep Work</strong><br>
+                        Reserve uninterrupted time blocks for complex tasks. Example schedule: 8-10am: Review SCADA specs (no emails/calls), 10-11am: Emails and meetings, 11am-12pm: Vendor coordination, 1-3pm: Site troubleshooting (flexible), 3-4pm: Documentation. Use calendar blocks to protect focus time. Set status to "Do Not Disturb" during critical work. Let your team know your schedule.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 5: Track Progress Daily with Visual Tools</strong><br>
+                        Create a simple progress tracker in Excel or Planner. Columns: Task, Priority, Status (Not Started/In Progress/Complete), Deadline, Notes. Update daily at end of day. Use color coding: Green=on track, Yellow=at risk, Red=delayed. This gives you and your manager visibility into your workload. Calculate completion percentages for major projects (e.g., "SCADA Review: 65% complete").
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 6: Develop Self-Direction and Problem-Solving</strong><br>
+                        Before asking for help, try: (1) Search vendor documentation, (2) Review similar past projects, (3) Google the specific error/issue, (4) Try basic troubleshooting (check connections, reboot, verify settings). Document what you tried. When you do need help, present the problem clearly: "I'm trying to configure Modbus on Inverter 10. I've tried X, Y, Z. Still getting timeout errors. Can you help?" This shows initiative.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 7: Handle Interruptions and Context Switching</strong><br>
+                        Interruptions will happen. Strategy: For quick questions (<5 min), answer immediately. For complex issues, say: "I'm in the middle of something critical. Can I call you back in 30 minutes?" Keep a "context switch" notepad - quickly jot down where you were on current task before switching. This helps you resume efficiently. Batch similar tasks (all emails together, all calls together) to minimize switching.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 8: Review and Adjust Weekly</strong><br>
+                        Every Friday afternoon, review: What got accomplished? What got delayed and why? What took longer than expected? What do I need to adjust next week? Update your task lists and priorities. Block out next week's calendar. Share your weekly progress with your manager in a brief email. This habit builds trust and keeps you aligned with project goals. Celebrate wins, learn from delays.
+                    </li>
+                </ul>
+                <div class="step-controls">
+                    <button onclick="changeSkillStep(9, -1)">← Prev Step</button>
+                    <button onclick="changeSkillStep(9, 1)">Next Step →</button>
+                </div>
+                
+                <h3>Skill 10: Professional interaction via email/text/phone/in-person</h3>
+                <p><strong>Comprehensive Tutorial:</strong></p>
+                <div class="step-counter" id="skill10-counter">Step 1 of 6</div>
+                <ul id="skill10-steps">
+                    <li class="skill-step active">
+                        <strong>Step 1: Master Email Professionalism</strong><br>
+                        Always use professional greetings: "Hi [Name]," or "Good morning," - avoid "Hey" in business emails. Use your signature block with full contact info. Respond within 24 hours (or acknowledge receipt: "Thanks, I'll review and respond by [date]"). CC relevant stakeholders but avoid overusing CC. When forwarding, add context: "FYI - see below regarding the Modbus issue we discussed." Proofread - typos undermine credibility.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 2: Text Message Best Practices</strong><br>
+                        Use texts for time-sensitive, brief communications only: "Running 10 min late to site" or "Quick question - call when free?" Avoid detailed technical discussions via text. Be clear and polite even in short messages: "Hi John, can you call me about the inverter issue when you have a moment? Thanks!" Don't text outside business hours unless urgent. If urgent, note that: "URGENT: Site power trip, need your input ASAP."
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 3: Phone Call Excellence</strong><br>
+                        Answer professionally: "This is [Your Name]." If you called someone, state purpose immediately: "Hi Maria, I'm calling about the SCADA drawings you sent yesterday. Do you have 5 minutes?" Speak clearly, not too fast. Smile while talking (it changes your tone positively). For voicemails, include: your name, company, reason for calling, your number (say it slowly twice), and best time to return your call.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 4: Confirm Understanding in All Channels</strong><br>
+                        After receiving instructions (email, text, call, in-person), confirm your understanding: Email: "To confirm, I'll update the IP address to 192.168.1.100 and test by EOD." Text: "Got it - will send the report by 3pm." Call: "Just to make sure I understand correctly, you need the Modbus register map for all 20 inverters?" This prevents misunderstandings and demonstrates professionalism.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 5: In-Person Meeting Professionalism</strong><br>
+                        Arrive 5 minutes early. Bring notepad and pen. Silence your phone. Make eye contact. Take notes on key points and action items. Ask questions when unclear - don't pretend to understand. Recap action items at meeting end: "So I'm responsible for reviewing the specs by Friday, and you'll send the updated drawings by Wednesday - correct?" Send follow-up email within 24 hours summarizing decisions and next steps.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 6: Document All Important Communications</strong><br>
+                        Keep records of decisions and commitments. After phone calls, send brief email: "Per our call today, we agreed to..." Save important emails in organized folders (by project, vendor, topic). For critical verbal agreements (in-person or phone), document immediately: "This email confirms our discussion on 2/12/26 regarding..." This protects you and creates project history. Use project management tools (Teams, ACC) to centralize communications.
+                    </li>
+                </ul>
+                <div class="step-controls">
+                    <button onclick="changeSkillStep(10, -1)">← Prev Step</button>
+                    <button onclick="changeSkillStep(10, 1)">Next Step →</button>
+                </div>
+                
+                <h3>Skill 11: Understand manufacturer operating parameters, limitations, commissioning guidelines</h3>
+                <p><strong>Comprehensive Tutorial:</strong></p>
+                <div class="step-counter" id="skill11-counter">Step 1 of 8</div>
+                <ul id="skill11-steps">
+                    <li class="skill-step active">
+                        <strong>Step 1: Locate and Organize Manufacturer Documentation</strong><br>
+                        For each equipment type, obtain: Installation Manual, Operation & Maintenance Manual, Communication Protocol Guide, Commissioning Procedure, and Technical Specifications. Request these from vendors early in projects. Store in organized folders: "ProjectName/Vendor/Equipment/Documentation". Create a master index spreadsheet listing all manuals with version numbers and dates. Always work from latest versions.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 2: Study Electrical Operating Parameters</strong><br>
+                        Read the specifications section carefully. Note critical parameters: Input voltage range (e.g., 480V ±10%), maximum current (e.g., 2000A continuous), operating temperature range (e.g., -20°C to +50°C), power factor capabilities (e.g., ±0.95). Highlight these in the manual. Create a quick-reference sheet: "Inverter XYZ: Max DC voltage 1500V, AC voltage 480V±10%, Max current 2000A, Temp -20 to +50°C." This prevents exceeding limits during commissioning.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 3: Understand Communication Limitations</strong><br>
+                        Identify communication constraints: Maximum polling rate (e.g., "Poll no faster than 1 request/second"), Maximum number of concurrent connections (e.g., "2 Modbus clients max"), Data update intervals (e.g., "Power measurements update every 1 second"), Timeout settings (e.g., "Default Modbus timeout: 5 seconds"). If you poll too fast or connect too many clients, communication will fail. Document these limits in your SCADA configuration notes.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 4: Learn Equipment Setup and Configuration Steps</strong><br>
+                        Study the setup section: Initial power-up sequence, Required parameter settings (IP address, Modbus ID, etc.), Safety interlocks that must be satisfied, Calibration procedures if applicable. Many manuals have a "Quick Start" section - read it but also read the full manual for critical details. Note any special tools required (software, cables, adapters). Create a pre-commissioning checklist from these steps.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 5: Master the Commissioning Checklist Approach</strong><br>
+                        Manufacturers provide commissioning procedures - convert these into detailed checklists. Example for inverter commissioning: □ Verify DC voltage within range, □ Check AC voltage and phase rotation, □ Set grid protection parameters, □ Configure communication settings, □ Test local/remote mode switching, □ Verify power ramp rates, □ Test shutdown sequence, □ Document all settings in commissioning report. Use checkbox format - nothing gets skipped.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 6: Identify Common Issues and Troubleshooting</strong><br>
+                        Read the troubleshooting section thoroughly. Note common alarms and their solutions. Example: "Alarm 1205 - Grid Overvoltage: Check utility voltage, verify protection settings." Create a troubleshooting quick-reference: Alarm Code → Possible Causes → Recommended Actions. Manufacturers often have FAQ documents or tech support bulletins - request these. Join manufacturer user groups if available.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 7: Follow Step-by-Step Commissioning Procedures Precisely</strong><br>
+                        During actual commissioning, work directly from the manufacturer's procedure - don't rely on memory. Mark each completed step with date/time/initials. If a step can't be completed, document why and get approval before proceeding. Take photos of critical steps (settings screens, connections, label verification). If the procedure says "Wait 5 minutes for initialization," wait the full time - shortcuts cause problems later.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 8: Document Deviations and Maintain As-Built Records</strong><br>
+                        If you must deviate from manufacturer procedures (e.g., due to site conditions), document: What was changed, Why it was necessary, Who approved it, Impact on warranty/performance. Update your commissioning report with as-built settings. Create a "Lessons Learned" section noting any manufacturer procedure issues or tips for future commissioning. Share this with your team to build institutional knowledge.
+                    </li>
+                </ul>
+                <div class="step-controls">
+                    <button onclick="changeSkillStep(11, -1)">← Prev Step</button>
+                    <button onclick="changeSkillStep(11, 1)">Next Step →</button>
+                </div>
+                
+                <h3>Skill 12: Read/understand technical plans/specs</h3>
+                <p><strong>Comprehensive Tutorial:</strong></p>
+                <div class="step-counter" id="skill12-counter">Step 1 of 7</div>
+                <ul id="skill12-steps">
+                    <li class="skill-step active">
+                        <strong>Step 1: Start with the Title Block and Revision History</strong><br>
+                        Every technical drawing has a title block (usually bottom right) containing: Project name, Drawing title/number, Date, Revision, Drawn by, Approved by. Always verify you have the latest revision - check the revision block (lists changes by date). Working from old revisions causes errors. Note the drawing scale and units (feet vs. meters). If digital, check file properties for modification date.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 2: Break Complex Drawings into Sections</strong><br>
+                        Large drawings can be overwhelming. Divide them mentally: For SCADA single-line diagrams, identify main sections (HV substation, MV collection, LV inverters, communication network). For communication architecture drawings, separate: Physical network topology, IP addressing scheme, Protocol assignments, Cybersecurity boundaries. Focus on one section at a time. Use sticky notes or digital annotation tools to mark sections reviewed.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 3: Highlight All SCADA-Relevant Information</strong><br>
+                        Use color-coded highlighting (digital or physical): Yellow = SCADA communication points, Green = IP addresses and network info, Orange = Protocol specifications, Pink = Questions/unclear items. Mark every device that needs SCADA integration: RTUs, PLCs, inverters, meters, weather stations. Note their communication methods (Modbus, DNP3, IEC 61850). Create a device count: "23 inverters, 5 combiner boxes, 2 MET stations, 1 RTU."
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 4: Cross-Reference Drawings with Specifications</strong><br>
+                        Drawings and written specifications must match. Example workflow: Drawing shows "RTU-01, Modbus TCP" → Find RTU specs document → Verify Modbus is specified → Check for any conflicts. Create a cross-reference matrix in Excel: Equipment Name | Drawing Reference | Spec Section | Communication Protocol | Notes. Flag any discrepancies immediately - don't assume, ask for clarification in RFI (Request for Information).
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 5: Understand Symbols, Abbreviations, and Legends</strong><br>
+                        Study the legend/symbol key on each drawing. Common SCADA symbols: Rectangle = RTU/PLC, Circle with M = Motor, Lightning bolt = Disconnect, Wavy line = Communication link. Learn standard abbreviations: MOV = Motor Operated Valve, HOA = Hand-Off-Auto, PLC = Programmable Logic Controller, HMI = Human Machine Interface. Keep an abbreviation reference sheet - industry-standard plus project-specific terms.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 6: Read Specification Documents Systematically</strong><br>
+                        Technical specifications are organized in sections (often CSI MasterFormat). For SCADA: Look in Divisions 25 (Integrated Automation), 26 (Electrical), 27 (Communications). Read in order: Scope, References, Submittals, Products/Equipment, Execution. Use the "Find" function to search for keywords: "SCADA," "Modbus," "protocol," "communication." Create a spec summary: Key requirements, Equipment specified, Submittal requirements, Testing requirements.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 7: Document Questions and Create Review Comments</strong><br>
+                        As you review, maintain a running questions list: "Drawing shows Modbus RTU, spec says Modbus TCP - which is correct?" Number your comments for tracking. Use clear format: "Drawing C-401, Zone B-3: Inverter 15 shown without IP address. Please provide." Include recommended solutions when possible: "Suggest assigning 192.168.1.115." Compile all comments into formal review document. Include page/sheet references, severity (Critical/Major/Minor), and required response date.
+                    </li>
+                </ul>
+                <div class="step-controls">
+                    <button onclick="changeSkillStep(12, -1)">← Prev Step</button>
+                    <button onclick="changeSkillStep(12, 1)">Next Step →</button>
+                </div>
+                
+                <h3>Skill 13: Thrive in team environment</h3>
+                <p><strong>Comprehensive Tutorial:</strong></p>
+                <div class="step-counter" id="skill13-counter">Step 1 of 6</div>
+                <ul id="skill13-steps">
+                    <li class="skill-step active">
+                        <strong>Step 1: Collaborate Openly and Proactively</strong><br>
+                        Share information freely with team members - don't hoard knowledge. When you solve a problem, document it and share: "I figured out the Modbus timeout issue - it was polling rate. Here's what I changed." Offer help when you see teammates struggling: "I noticed you're working on inverter comms - I just did something similar. Happy to share what I learned." Join team meetings prepared and contribute ideas. Ask questions to understand others' work.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 2: Provide Regular Status Updates</strong><br>
+                        Don't wait to be asked - proactively share progress. In team meetings: "I completed review of the SCADA specs yesterday, found 15 items that need clarification, sent RFI to vendor." Use project tracking tools (Teams, ACC, Planner) to update task status daily. If you're blocked on something, communicate immediately: "I need the inverter IP addresses to continue - who can provide these?" Keep your manager and team informed.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 3: Seek Help When Needed (and Offer It to Others)</strong><br>
+                        Asking for help is not weakness - it's efficiency. When stuck after trying to solve independently (see Skill 9), reach out: "I've been troubleshooting this Modbus issue for 2 hours using X, Y, Z approaches. Can someone take a look?" Be specific about what help you need. Conversely, offer your expertise: "I'm experienced with IEC 61850 if anyone needs help." Building a help-giving culture strengthens the team.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 4: Respect Different Roles and Expertise</strong><br>
+                        Your project team includes diverse roles: Project managers focus on schedule/budget, construction teams on physical installation, O&M on long-term operations. Each has different priorities and perspectives. Listen to their concerns: When construction says "This network cable routing is difficult," they're not complaining - they're giving you important input. Adapt your communication and solutions to support all team members' success.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 5: Participate Constructively in Team Decisions</strong><br>
+                        In team discussions, contribute your technical perspective professionally. Structure input: "From a SCADA perspective, Option A provides better redundancy, but Option B is faster to commission. Here are the tradeoffs..." Disagree respectfully when needed: "I understand the cost savings, but I'm concerned about communication reliability. Can we discuss alternatives?" Once team decides, support the decision even if it wasn't your preference.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 6: Build Positive Relationships Beyond Work Tasks</strong><br>
+                        Take time for casual conversation - ask about weekends, families, hobbies. Remember details about teammates' lives. Celebrate team successes: "Great job getting Inverter Block 3 online ahead of schedule!" Acknowledge others' contributions: "Thanks to Sarah for the quick turnaround on those drawings." Join optional team events when possible. Strong relationships make collaboration easier and work more enjoyable. Be someone people want to work with.
+                    </li>
+                </ul>
+                <div class="step-controls">
+                    <button onclick="changeSkillStep(13, -1)">← Prev Step</button>
+                    <button onclick="changeSkillStep(13, 1)">Next Step →</button>
+                </div>
+                
+                <h3>Skill 14: Work in fast-paced setting with positive attitude under stress</h3>
+                <p><strong>Comprehensive Tutorial:</strong></p>
+                <div class="step-counter" id="skill14-counter">Step 1 of 7</div>
+                <ul id="skill14-steps">
+                    <li class="skill-step active">
+                        <strong>Step 1: Stay Calm - Practice Stress Management Techniques</strong><br>
+                        When pressure builds (site down, multiple urgent requests, tight deadline), first: Stop and take 3 deep breaths - inhale for 4 counts, hold for 4, exhale for 4. This activates your parasympathetic nervous system and clears your mind. Remind yourself: "I can only do one thing at a time. I will start with the most critical item." Avoid catastrophizing - focus on what you can control right now, not worst-case scenarios.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 2: Focus on One Issue at a Time</strong><br>
+                        Multitasking under stress reduces effectiveness. When overwhelmed: Write down all urgent items, prioritize by true urgency (production impact > deadline pressure > convenience), tackle #1 completely before moving to #2. Example: "Site SCADA down" gets 100% focus until resolved, then move to "Vendor RFI due today." Tell people: "I'm working on the site outage first, will address your request within 2 hours." This manages expectations.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 3: Maintain Positive Communication Even When Stressed</strong><br>
+                        Stress makes us short-tempered - resist this. Before responding to emails/calls when stressed, pause and choose constructive language. Instead of: "I can't deal with this right now!" say: "I'm handling an urgent site issue. Can I get back to you by 3pm?" Instead of: "This spec is terrible!" say: "I found several items needing clarification." Positive framing maintains relationships and actually reduces stress.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 4: Break Overwhelming Tasks into Immediate Next Steps</strong><br>
+                        Big problems feel paralyzing. Break them down: "Site SCADA completely down" → Immediate steps: (1) Check SCADA server status - 2 minutes, (2) Ping all devices - 5 minutes, (3) Check switch lights - 2 minutes, (4) Call vendor if needed. Focus only on step 1, complete it, move to step 2. This creates momentum and reduces anxiety. Each completed step is progress.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 5: Know When to Escalate and Ask for Help</strong><br>
+                        Working independently is good, but not when it delays critical solutions. Escalate when: (1) Issue affects production and you've exhausted quick troubleshooting (30 min), (2) Problem is outside your current expertise, (3) You need resources/approvals beyond your authority. Say: "I've tried X and Y, still not resolved. Escalating to ensure quick resolution." This is professional judgment, not failure.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 6: Maintain Physical and Mental Resilience</strong><br>
+                        Fast-paced work is draining. Build resilience: Get adequate sleep (7-8 hours - tired people make mistakes), eat regular meals (keep healthy snacks at desk - low blood sugar impairs thinking), take short breaks even when busy (5-minute walk clears your head), exercise regularly (proven stress reducer). During long troubleshooting sessions, step away briefly every hour. Marathon troubleshooting sessions with no breaks lead to mistakes.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 7: Reflect and Learn from High-Pressure Situations</strong><br>
+                        After stressful events, reflect: What went well? What would I do differently? What can prevent this situation next time? Document lessons learned - not to blame, but to improve. Example: "Site outage due to network switch failure. Lesson: Add switch status monitoring to SCADA. Action: Request redundant switches for future projects." Share these insights with your team. Each challenge makes you better prepared for the next one.
+                    </li>
+                </ul>
+                <div class="step-controls">
+                    <button onclick="changeSkillStep(14, -1)">← Prev Step</button>
+                    <button onclick="changeSkillStep(14, 1)">Next Step →</button>
+                </div>
+                
+                <h3>Skill 15: Strong organizational skills for issue tracking</h3>
+                <p><strong>Comprehensive Tutorial:</strong></p>
+                <div class="step-counter" id="skill15-counter">Step 1 of 8</div>
+                <ul id="skill15-steps">
+                    <li class="skill-step active">
+                        <strong>Step 1: Choose and Master Your Issue Tracking System</strong><br>
+                        Use your company's standard platform (likely AutoDesk Construction Cloud, Microsoft Planner, or similar). Learn its features: Create tickets/issues, assign priorities, add attachments, set due dates, track status changes, generate reports. Complete any available training. If no system exists, propose one - even Excel can work with proper structure. The key is consistency - everyone uses the same system the same way.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 2: Document Every Issue with Complete Information</strong><br>
+                        When creating an issue ticket, include these essential fields: Title (concise but descriptive: "Inverter 12 Modbus Communication Failure"), Description (what's wrong, when it started, what's affected), Priority (Critical/High/Medium/Low based on impact), Category (Communication/Hardware/Software/Configuration), Assigned To (who's responsible), Due Date, Status (Open/In Progress/Waiting/Resolved/Closed). Attach screenshots, logs, or relevant files.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 3: Use Consistent Naming and Numbering Conventions</strong><br>
+                        Establish and follow naming standards: Equipment: Use official IDs from drawings (INV-12, not "that inverter near the office"), Issues: Number sequentially (SCADA-2026-001, SCADA-2026-002), Files: Descriptive names with dates (SCADA_Troubleshooting_Report_INV12_20260212.pdf). Consistency makes searching easy. Create a project naming convention document and share it with your team.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 4: Track Issues from Open to Closed with Detailed Steps</strong><br>
+                        For each issue, document the complete journey: Initial Report (what, when, who reported), Investigation Steps (each action taken with timestamp), Root Cause (what was the actual problem), Resolution (how it was fixed), Verification (how you confirmed it's fixed), Closure Notes (any remaining actions or lessons learned). This creates a knowledge base for future similar issues. Example: "Tried pinging device (failed) → Checked network cable (loose) → Reseated cable → Ping successful → Modbus communication restored."
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 5: Prioritize and Update Issues Daily</strong><br>
+                        Start each day reviewing your open issues. Update statuses: "Waiting for vendor response" → "In Progress (vendor replied, testing solution)." Reprioritize based on changing conditions: Minor issue becomes Critical if it's blocking commissioning. Set aside 15 minutes at day end for updates. Communicate status changes to stakeholders: "Issue SCADA-023 resolved and verified. Closing ticket." Daily hygiene prevents tickets from getting lost or stale.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 6: Create Issue Reports and Track Trends</strong><br>
+                        Generate weekly/monthly reports from your tracking system: Total issues (opened/closed/open), Issues by category (Communication 40%, Hardware 30%, Configuration 20%, Software 10%), Issues by priority, Average time to resolution. Look for trends: "50% of communication issues are Modbus timeouts - need to review polling configuration." Share reports with management. This demonstrates your workload and identifies systemic problems.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 7: Link Related Issues and Build Knowledge Base</strong><br>
+                        When multiple issues relate to the same root cause, link them: "Issue-045 (INV-12 timeout), Issue-046 (INV-13 timeout), Issue-047 (INV-14 timeout) all caused by switch configuration error." This reveals patterns. Create a solutions database: "Modbus Timeout → Check polling rate → Reduce from 1sec to 2sec → Resolution confirmed in Issues 045-047." Future issues resolve faster using this knowledge base.
+                    </li>
+                    <li class="skill-step">
+                        <strong>Step 8: Close Issues Properly with Documentation</strong><br>
+                        Never close issues without: Verified resolution (testing confirms it's fixed), Complete documentation (all steps recorded), Stakeholder notification (inform who reported it: "Your reported comm issue with INV-12 has been resolved"), Any follow-up actions noted (e.g., "Permanent fix requires firmware update in Q2"), Closure date recorded. Before closing, ask: "If this happens again, could someone follow my notes to fix it?" If no, add more detail. Well-closed issues become training materials.
+                    </li>
+                </ul>
+                <div class="step-controls">
+                    <button onclick="changeSkillStep(15, -1)">← Prev Step</button>
+                    <button onclick="changeSkillStep(15, 1)">Next Step →</button>
+                </div>
+            </div>
+            
+            <div class="section" id="checklist">
+                <h2>✅ Skill Checklist</h2>
+                <p><em>Track your progress as you develop each skill. Check off skills as you complete their tutorials and gain practical experience.</em></p>
+                
+                <div class="highlight">
+                    <div style="margin-bottom: 15px;">
+                        <input type="checkbox" id="check-skill1" style="margin-right: 10px; transform: scale(1.3);">
+                        <label for="check-skill1" style="cursor: pointer;">
+                            <strong>Familiarity with equipment manufacturers</strong> - Know major Solar, BESS, and HV vendors and their SCADA integration specs
+                            <button onclick="scrollToSkill(1)" style="margin-left: 10px; padding: 5px 10px; background: #1e5799; color: white; border: none; border-radius: 3px; cursor: pointer;">Go to Tutorial →</button>
+                        </label>
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <input type="checkbox" id="check-skill2" style="margin-right: 10px; transform: scale(1.3);">
+                        <label for="check-skill2" style="cursor: pointer;">
+                            <strong>Knowledge of IEC61850 and IEEE protocols</strong> - Understand substation automation standards and interoperability
+                            <button onclick="scrollToSkill(2)" style="margin-left: 10px; padding: 5px 10px; background: #1e5799; color: white; border: none; border-radius: 3px; cursor: pointer;">Go to Tutorial →</button>
+                        </label>
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <input type="checkbox" id="check-skill3" style="margin-right: 10px; transform: scale(1.3);">
+                        <label for="check-skill3" style="cursor: pointer;">
+                            <strong>Understanding of NERC, FERC and utility compliance</strong> - Know grid reliability requirements and communication standards
+                            <button onclick="scrollToSkill(3)" style="margin-left: 10px; padding: 5px 10px; background: #1e5799; color: white; border: none; border-radius: 3px; cursor: pointer;">Go to Tutorial →</button>
+                        </label>
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <input type="checkbox" id="check-skill4" style="margin-right: 10px; transform: scale(1.3);">
+                        <label for="check-skill4" style="cursor: pointer;">
+                            <strong>Proficiency navigating HMIs</strong> - Navigate HMI software for troubleshooting and data collection
+                            <button onclick="scrollToSkill(4)" style="margin-left: 10px; padding: 5px 10px; background: #1e5799; color: white; border: none; border-radius: 3px; cursor: pointer;">Go to Tutorial →</button>
+                        </label>
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <input type="checkbox" id="check-skill5" style="margin-right: 10px; transform: scale(1.3);">
+                        <label for="check-skill5" style="cursor: pointer;">
+                            <strong>Knowledge of SCADA protocols and network topologies</strong> - Master Modbus, DNP3, IEC 61850 and network architectures
+                            <button onclick="scrollToSkill(5)" style="margin-left: 10px; padding: 5px 10px; background: #1e5799; color: white; border: none; border-radius: 3px; cursor: pointer;">Go to Tutorial →</button>
+                        </label>
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <input type="checkbox" id="check-skill6" style="margin-right: 10px; transform: scale(1.3);">
+                        <label for="check-skill6" style="cursor: pointer;">
+                            <strong>Expert in Microsoft Office/Excel</strong> - Master Excel for SCADA data analysis and automation with VBA
+                            <button onclick="scrollToSkill(6)" style="margin-left: 10px; padding: 5px 10px; background: #1e5799; color: white; border: none; border-radius: 3px; cursor: pointer;">Go to Tutorial →</button>
+                        </label>
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <input type="checkbox" id="check-skill7" style="margin-right: 10px; transform: scale(1.3);">
+                        <label for="check-skill7" style="cursor: pointer;">
+                            <strong>Knowledge of TCP/IP, Modbus etc.</strong> - Understand networking and Modbus TCP/IP protocol implementation
+                            <button onclick="scrollToSkill(7)" style="margin-left: 10px; padding: 5px 10px; background: #1e5799; color: white; border: none; border-radius: 3px; cursor: pointer;">Go to Tutorial →</button>
+                        </label>
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <input type="checkbox" id="check-skill8" style="margin-right: 10px; transform: scale(1.3);">
+                        <label for="check-skill8" style="cursor: pointer;">
+                            <strong>Strong written/oral communication</strong> - Communicate effectively across all professional channels
+                            <button onclick="scrollToSkill(8)" style="margin-left: 10px; padding: 5px 10px; background: #1e5799; color: white; border: none; border-radius: 3px; cursor: pointer;">Go to Tutorial →</button>
+                        </label>
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <input type="checkbox" id="check-skill9" style="margin-right: 10px; transform: scale(1.3);">
+                        <label for="check-skill9" style="cursor: pointer;">
+                            <strong>Ability to prioritize, multitask, work independently</strong> - Manage multiple tasks and work efficiently without constant supervision
+                            <button onclick="scrollToSkill(9)" style="margin-left: 10px; padding: 5px 10px; background: #1e5799; color: white; border: none; border-radius: 3px; cursor: pointer;">Go to Tutorial →</button>
+                        </label>
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <input type="checkbox" id="check-skill10" style="margin-right: 10px; transform: scale(1.3);">
+                        <label for="check-skill10" style="cursor: pointer;">
+                            <strong>Professional interaction via all channels</strong> - Maintain professionalism in email, text, phone, and in-person communication
+                            <button onclick="scrollToSkill(10)" style="margin-left: 10px; padding: 5px 10px; background: #1e5799; color: white; border: none; border-radius: 3px; cursor: pointer;">Go to Tutorial →</button>
+                        </label>
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <input type="checkbox" id="check-skill11" style="margin-right: 10px; transform: scale(1.3);">
+                        <label for="check-skill11" style="cursor: pointer;">
+                            <strong>Understand manufacturer operating parameters</strong> - Know equipment limitations, parameters, and commissioning procedures
+                            <button onclick="scrollToSkill(11)" style="margin-left: 10px; padding: 5px 10px; background: #1e5799; color: white; border: none; border-radius: 3px; cursor: pointer;">Go to Tutorial →</button>
+                        </label>
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <input type="checkbox" id="check-skill12" style="margin-right: 10px; transform: scale(1.3);">
+                        <label for="check-skill12" style="cursor: pointer;">
+                            <strong>Read/understand technical plans/specs</strong> - Interpret drawings, specifications, and technical documentation accurately
+                            <button onclick="scrollToSkill(12)" style="margin-left: 10px; padding: 5px 10px; background: #1e5799; color: white; border: none; border-radius: 3px; cursor: pointer;">Go to Tutorial →</button>
+                        </label>
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <input type="checkbox" id="check-skill13" style="margin-right: 10px; transform: scale(1.3);">
+                        <label for="check-skill13" style="cursor: pointer;">
+                            <strong>Thrive in team environment</strong> - Collaborate effectively, share knowledge, and contribute to team success
+                            <button onclick="scrollToSkill(13)" style="margin-left: 10px; padding: 5px 10px; background: #1e5799; color: white; border: none; border-radius: 3px; cursor: pointer;">Go to Tutorial →</button>
+                        </label>
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <input type="checkbox" id="check-skill14" style="margin-right: 10px; transform: scale(1.3);">
+                        <label for="check-skill14" style="cursor: pointer;">
+                            <strong>Work in fast-paced setting with positive attitude</strong> - Handle stress effectively and maintain productivity under pressure
+                            <button onclick="scrollToSkill(14)" style="margin-left: 10px; padding: 5px 10px; background: #1e5799; color: white; border: none; border-radius: 3px; cursor: pointer;">Go to Tutorial →</button>
+                        </label>
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <input type="checkbox" id="check-skill15" style="margin-right: 10px; transform: scale(1.3);">
+                        <label for="check-skill15" style="cursor: pointer;">
+                            <strong>Strong organizational skills for issue tracking</strong> - Document and track issues systematically from discovery to resolution
+                            <button onclick="scrollToSkill(15)" style="margin-left: 10px; padding: 5px 10px; background: #1e5799; color: white; border: none; border-radius: 3px; cursor: pointer;">Go to Tutorial →</button>
+                        </label>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <button onclick="saveChecklistProgress()" style="padding: 12px 30px; background: #2d8f4d; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 1em; font-weight: bold;">Save Progress (to Browser)</button>
+                </div>
+            </div>
+            
+            <div class="section" id="benefits">
+                <h2>Benefits</h2>
+                <div class="info-box">
+                    <p><strong>Competitive package – details on application</strong></p>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            Primoris Services Corporation © 2026
+        </footer>
+    </div>
+    
+    <script>
+        // Global navigation to sections
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+        
+        // Primary Responsibilities step navigation
+        let currentRespStep = 0;
+        const respSteps = document.querySelectorAll('#resp-steps .step-item');
+        const totalRespSteps = respSteps.length;
+        
+        function changeRespStep(direction) {
+            respSteps[currentRespStep].classList.remove('active');
+            currentRespStep += direction;
+            
+            if (currentRespStep < 0) currentRespStep = 0;
+            if (currentRespStep >= totalRespSteps) currentRespStep = totalRespSteps - 1;
+            
+            respSteps[currentRespStep].classList.add('active');
+            updateRespCounter();
+            updateRespButtons();
+        }
+        
+        function updateRespCounter() {
+            document.getElementById('resp-counter').textContent = `Step ${currentRespStep + 1} of ${totalRespSteps}`;
+        }
+        
+        function updateRespButtons() {
+            document.getElementById('resp-prev').disabled = (currentRespStep === 0);
+            document.getElementById('resp-next').disabled = (currentRespStep === totalRespSteps - 1);
+        }
+        
+        // Skills step navigation
+        const skillStepCounts = [8, 10, 9, 10, 9, 8, 10, 7, 8, 6, 8, 7, 6, 7, 8];
+        const currentSkillSteps = new Array(15).fill(0);
+        
+        function changeSkillStep(skillNum, direction) {
+            const stepsContainer = document.getElementById(`skill${skillNum}-steps`);
+            const steps = stepsContainer.querySelectorAll('.skill-step');
+            const totalSteps = skillStepCounts[skillNum - 1];
+            
+            steps[currentSkillSteps[skillNum - 1]].classList.remove('active');
+            currentSkillSteps[skillNum - 1] += direction;
+            
+            if (currentSkillSteps[skillNum - 1] < 0) currentSkillSteps[skillNum - 1] = 0;
+            if (currentSkillSteps[skillNum - 1] >= totalSteps) currentSkillSteps[skillNum - 1] = totalSteps - 1;
+            
+            steps[currentSkillSteps[skillNum - 1]].classList.add('active');
+            updateSkillCounter(skillNum);
+        }
+        
+        function updateSkillCounter(skillNum) {
+            const totalSteps = skillStepCounts[skillNum - 1];
+            document.getElementById(`skill${skillNum}-counter`).textContent = 
+                `Step ${currentSkillSteps[skillNum - 1] + 1} of ${totalSteps}`;
+        }
+        
+        // Initialize buttons
+        updateRespButtons();
+        
+        // Skill checklist functions
+        function scrollToSkill(skillNum) {
+            const skillsSection = document.getElementById('skills');
+            const allH3 = skillsSection.getElementsByTagName('h3');
+            if (allH3[skillNum - 1]) {
+                allH3[skillNum - 1].scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+        
+        function saveChecklistProgress() {
+            const checkboxes = {};
+            for (let i = 1; i <= 15; i++) {
+                const checkbox = document.getElementById(`check-skill${i}`);
+                if (checkbox) {
+                    checkboxes[`skill${i}`] = checkbox.checked;
+                }
+            }
+            localStorage.setItem('scadaSkillChecklist', JSON.stringify(checkboxes));
+            alert('Progress saved to your browser! Your checklist will be restored when you return to this page.');
+        }
+        
+        function loadChecklistProgress() {
+            const saved = localStorage.getItem('scadaSkillChecklist');
+            if (saved) {
+                const checkboxes = JSON.parse(saved);
+                for (let i = 1; i <= 15; i++) {
+                    const checkbox = document.getElementById(`check-skill${i}`);
+                    if (checkbox && checkboxes[`skill${i}`]) {
+                        checkbox.checked = true;
+                    }
+                }
+            }
+        }
+        
+        // Load saved progress on page load
+        window.addEventListener('load', loadChecklistProgress);
+    </script>
+</body>
+</html>
